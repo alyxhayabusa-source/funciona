@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>ProfileApp</title>
+    <base href="/" />
+    <script type='module'>
+        const segment = 1;
+        sessionStorage.redirect = location.href.split('/').slice(0, 1 + segment).join('/') + '/#' + location.pathname.slice(1).split('/').slice(segment).join('/') + location.search + location.hash;
+        document.write('<script src="_framework/blazor.webassembly.js"><\/script>');
+        document.write('<link href="css/app.css" rel="stylesheet" />');
+        document.write('<div id="app">Loading...</div>');
+    </script>
+</head>
+<body>
+    <script>
+        // Redirigir a la ruta correcta
+        if (sessionStorage.redirect) {
+            const redirect = sessionStorage.redirect;
+            sessionStorage.removeItem('redirect');
+            window.history.replaceState({}, '', redirect);
+        }
+    </script>
+</body>
+</html>

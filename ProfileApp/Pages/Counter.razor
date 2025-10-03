@@ -1,0 +1,249 @@
+@page "/counter"
+@layout MainLayout
+
+<PageTitle>Counter - ProfileApp</PageTitle>
+
+<div class="counter-page">
+    <div class="container">
+        <!-- Header Section -->
+        <div class="page-header">
+            <div class="header-content">
+                <h1 class="page-title">
+                    <i class="bi bi-plus-circle-fill me-3"></i>
+                    Counter App
+                </h1>
+                <p class="page-description">
+                    Un contador interactivo con efectos modernos y animaciones fluidas
+                </p>
+            </div>
+        </div>
+
+        <!-- Main Counter Card -->
+        <div class="counter-card">
+            <div class="card-header">
+                <div class="counter-icon">
+                    <i class="bi bi-calculator"></i>
+                </div>
+                <h2>Contador Principal</h2>
+                <p>Presiona los botones para interactuar</p>
+            </div>
+            
+            <div class="counter-display">
+                <div class="counter-number @(currentCount > 0 ? "positive" : currentCount < 0 ? "negative" : "")">
+                    @currentCount
+                </div>
+                <div class="counter-label">Valor Actual</div>
+            </div>
+
+{{ ... }}
+            <div class="counter-controls">
+                <button class="btn-counter decrement" @onclick="DecrementCount" disabled="@(currentCount <= -10)">
+                    <i class="bi bi-dash-lg"></i>
+                    <span>Restar</span>
+                </button>
+                
+                <button class="btn-counter reset" @onclick="ResetCount">
+                    <i class="bi bi-arrow-clockwise"></i>
+                    <span>Reset</span>
+                </button>
+                
+                <button class="btn-counter increment" @onclick="IncrementCount" disabled="@(currentCount >= 50)">
+                    <i class="bi bi-plus-lg"></i>
+                    <span>Sumar</span>
+                </button>
+            </div>
+
+            <!-- Statistics Card -->
+            <div class="counter-stats">
+                <div class="stat-item">
+                    <div class="stat-icon">
+                        <i class="bi bi-graph-up"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value">@totalClicks</div>
+                        <div class="stat-label">Total Clicks</div>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">
+                        <i class="bi bi-lightning"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value">@maxReached</div>
+                        <div class="stat-label">Máximo Alcanzado</div>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">
+                        <i class="bi bi-trophy"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value">@achievements.Count</div>
+                        <div class="stat-label">Logros</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Achievements Section -->
+        @if (achievements.Any())
+        {
+            <div class="achievements-section">
+                <h3 class="section-title">
+                    <i class="bi bi-award-fill me-2"></i>
+                    Logros Desbloqueados
+                </h3>
+                <div class="achievements-grid">
+                    @foreach (var achievement in achievements)
+                    {
+                        <div class="achievement-card @achievement.Type">
+                            <div class="achievement-icon">
+                                <i class="@achievement.Icon"></i>
+                            </div>
+                            <div class="achievement-content">
+                                <h4>@achievement.Title</h4>
+                                <p>@achievement.Description</p>
+                                <small>Desbloqueado: @achievement.UnlockedAt.ToString("HH:mm")</small>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <h3 class="section-title">
+                <i class="bi bi-lightning-fill me-2"></i>
+                Acciones Rápidas
+            </h3>
+            <div class="actions-grid">
+                <button class="action-btn" @onclick="() => AddMultiple(5)">
+                    <i class="bi bi-plus-square"></i>
+                    <span>+5</span>
+                </button>
+                <button class="action-btn" @onclick="() => AddMultiple(10)">
+                    <i class="bi bi-plus-square-fill"></i>
+                    <span>+10</span>
+                </button>
+                <button class="action-btn" @onclick="() => AddMultiple(-5)">
+                    <i class="bi bi-dash-square"></i>
+                    <span>-5</span>
+                </button>
+                <button class="action-btn" @onclick="() => AddMultiple(-10)">
+                    <i class="bi bi-dash-square-fill"></i>
+                    <span>-10</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private int currentCount = 0;
+    private int totalClicks = 0;
+    private int maxReached = 0;
+    private List<Achievement> achievements = new();
+
+    private void IncrementCount()
+    {
+        currentCount++;
+        totalClicks++;
+        CheckAchievements();
+        UpdateMaxReached();
+    }
+
+    private void DecrementCount()
+    {
+        currentCount--;
+        totalClicks++;
+        CheckAchievements();
+    }
+
+    private void ResetCount()
+    {
+        currentCount = 0;
+        totalClicks++;
+        CheckAchievements();
+    }
+
+    private void AddMultiple(int value)
+    {
+        currentCount += value;
+        totalClicks++;
+        CheckAchievements();
+        UpdateMaxReached();
+    }
+
+    private void CheckAchievements()
+    {
+        // Logro: Primer click
+        if (totalClicks == 1 && !achievements.Any(a => a.Title == "Primer Click"))
+        {
+            achievements.Add(new Achievement
+            {
+                Title = "Primer Click",
+                Description = "¡Tu primera interacción!",
+                Icon = "bi bi-star-fill",
+                Type = "bronze",
+                UnlockedAt = DateTime.Now
+            });
+        }
+
+        // Logro: Contador positivo
+        if (currentCount == 5 && !achievements.Any(a => a.Title == "Cinco Positivo"))
+        {
+            achievements.Add(new Achievement
+            {
+                Title = "Cinco Positivo",
+                Description = "Llegaste a 5 clicks positivos",
+                Icon = "bi bi-emoji-smile",
+                Type = "silver",
+                UnlockedAt = DateTime.Now
+            });
+        }
+
+        // Logro: Máximo alcanzado
+        if (currentCount == 50 && !achievements.Any(a => a.Title == "Máximo Alcanzado"))
+        {
+            achievements.Add(new Achievement
+            {
+                Title = "Máximo Alcanzado",
+                Description = "¡Llegaste al límite superior!",
+                Icon = "bi bi-trophy-fill",
+                Type = "gold",
+                UnlockedAt = DateTime.Now
+            });
+        }
+
+        // Logro: 100 clicks
+        if (totalClicks == 100 && !achievements.Any(a => a.Title == "Centurión"))
+        {
+            achievements.Add(new Achievement
+            {
+                Title = "Centurión",
+                Description = "¡100 clicks realizados!",
+                Icon = "bi bi-100",
+                Type = "platinum",
+                UnlockedAt = DateTime.Now
+            });
+        }
+    }
+
+    private void UpdateMaxReached()
+    {
+        if (currentCount > maxReached)
+        {
+            maxReached = currentCount;
+        }
+    }
+
+    public class Achievement
+    {
+        public string Title { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string Icon { get; set; } = string.Empty;
+        public string Type { get; set; } = string.Empty;
+        public DateTime UnlockedAt { get; set; }
+    }
+}

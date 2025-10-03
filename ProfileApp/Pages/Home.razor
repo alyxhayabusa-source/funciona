@@ -1,0 +1,285 @@
+﻿@page "/"
+@inject NavigationManager Navigation
+
+<PageTitle>Home - ProfileApp</PageTitle>
+
+<div class="profile-page">
+    <div class="profile-banner">
+        <div class="banner-content">
+            <div class="floating-elements">
+                <div class="floating-shape shape-1"></div>
+                <div class="floating-shape shape-2"></div>
+                <div class="floating-shape shape-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-main container">
+        <div class="profile-info row align-items-center">
+            <div class="col-md-3 text-center">
+                <div class="avatar-container">
+                    <img src="https://i.pravatar.cc/200?img=12" class="profile-avatar" alt="Avatar de Jean Doe">
+                    <div class="status-indicator @(isOnline ? "online" : "offline")" title="@(isOnline ? "En línea" : "Desconectado")"></div>
+                </div>
+                <div class="social-links">
+                    <a href="#" class="social-link" title="GitHub">
+                        <i class="bi bi-github"></i>
+                    </a>
+                    <a href="#" class="social-link" title="LinkedIn">
+                        <i class="bi bi-linkedin"></i>
+                    </a>
+                    <a href="#" class="social-link" title="Twitter">
+                        <i class="bi bi-twitter"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <h2 class="profile-name">Jean Doe</h2>
+                <p class="profile-role">
+                    <i class="bi bi-code-slash me-2"></i>Desarrollador Full-Stack / UI & UX Enthusiast
+                </p>
+                <p class="profile-description">
+                    Apasionado por crear experiencias digitales excepcionales. Especializado en tecnologías modernas y diseño centrado en el usuario.
+                </p>
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">@projectsCount</span>
+                        <span class="stat-label">Proyectos</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">@followersCount</span>
+                        <span class="stat-label">Seguidores</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">@experienceYears</span>
+                        <span class="stat-label">Años de experiencia</span>
+                    </div>
+                </div>
+                <div class="profile-badges">
+                    @foreach (var skill in skills)
+                    {
+                        <span class="badge badge-skill @(skill.IsHighlighted ? "highlighted" : "")" @onclick="() => ToggleSkill(skill)">
+                            @skill.Name
+                        </span>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <hr class="divider" />
+
+        <div class="cards-section row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="card custom-card h-100" @onclick="NavigateToProjects">
+                    <div class="card-body d-flex flex-column">
+                        <div class="card-icon">
+                            <i class="bi bi-folder-check"></i>
+                        </div>
+                        <h5 class="card-title">Proyectos</h5>
+                        <p class="card-text flex-grow-1">
+                            Ver todos tus proyectos activos y completados. 
+                            <span class="highlight-text">@activeProjects activos</span>
+                        </p>
+                        <div class="progress mb-3">
+                            <div class="progress-bar" style="width: @projectProgress%"></div>
+                        </div>
+                        <button class="btn btn-action">
+                            <i class="bi bi-arrow-right me-2"></i>Explorar
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card custom-card h-100" @onclick="NavigateToFollowers">
+                    <div class="card-body d-flex flex-column">
+                        <div class="card-icon">
+                            <i class="bi bi-plus-circle-fill"></i>
+                        </div>
+                        <h5 class="card-title">Counter</h5>
+                        <p class="card-text flex-grow-1">
+                            Prueba el contador interactivo con 	
+                            <span class="highlight-text">@followersCount.ToString("N0")</span> clicks registrados.
+                            <span class="growth-indicator @(followerGrowth > 0 ? "positive" : "negative")">
+                                <i class="bi bi-arrow-@(followerGrowth > 0 ? "up" : "down")"></i>
+                                @Math.Abs(followerGrowth)%
+                            </span>
+                        </p>
+                        <div class="follower-chart">
+                            <div class="chart-bar" style="height: 60%"></div>
+                            <div class="chart-bar" style="height: 80%"></div>
+                            <div class="chart-bar" style="height: 45%"></div>
+                            <div class="chart-bar" style="height: 90%"></div>
+                            <div class="chart-bar" style="height: 70%"></div>
+                        </div>
+                        <button class="btn btn-action">
+                            <i class="bi bi-plus-circle me-2"></i>Contar
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card custom-card h-100" @onclick="NavigateToMessages">
+                    <div class="card-body d-flex flex-column">
+                        <div class="card-icon">
+                            <i class="bi bi-cloud-sun-fill"></i>
+                            @if (unreadMessages > 0)
+                            {
+                                <span class="notification-badge">@unreadMessages</span>
+                            }
+                        </div>
+                        <h5 class="card-title">Weather</h5>
+                        <p class="card-text flex-grow-1">
+                            Clima con 
+                            <span class="highlight-text">@unreadMessages</span> grados de temperatura.
+                            @if (unreadMessages > 0)
+                            {
+                                <span class="urgent-indicator">Urgentes: @urgentMessages</span>
+                            }
+                        </p>
+                        <div class="message-preview">
+                            @if (lastMessage != null)
+                            {
+                                <div class="preview-item">
+                                    <strong>@lastMessage.Sender:</strong> @lastMessage.Preview
+                                </div>
+                            }
+                        </div>
+                        <button class="btn btn-action">
+                            <i class="bi bi-cloud-sun me-2"></i>Ver clima
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card custom-card h-100" @onclick="NavigateToSkills">
+                    <div class="card-body d-flex flex-column">
+                        <div class="card-icon">
+                            <i class="bi bi-gear-fill"></i>
+                        </div>
+                        <h5 class="card-title">Habilidades</h5>
+                        <p class="card-text flex-grow-1">
+                            Mis habilidades técnicas y competencias profesionales.
+                            <span class="highlight-text">@skills.Count habilidades</span>
+                        </p>
+                        <div class="skill-badges">
+                            @foreach (var skill in skills.Take(3))
+                            {
+                                <span class="skill-badge">@skill.Name</span>
+                            }
+                        </div>
+                        <button class="btn btn-action">
+                            <i class="bi bi-gear me-2"></i>Ver habilidades
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección de actividad reciente -->
+        <div class="activity-section mt-5">
+            <h3 class="section-title">
+                <i class="bi bi-clock-history me-2"></i>Actividad reciente
+            </h3>
+            <div class="activity-timeline">
+                @foreach (var activity in recentActivities)
+                {
+                    <div class="timeline-item">
+                        <div class="timeline-marker @activity.Type"></div>
+                        <div class="timeline-content">
+                            <h6>@activity.Title</h6>
+                            <p>@activity.Description</p>
+                            <small class="text-muted">@activity.TimeAgo</small>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    // Datos del perfil
+    private bool isOnline = true;
+    private int projectsCount = 47;
+    private int followersCount = 2300;
+    private int experienceYears = 5;
+    private int activeProjects = 8;
+    private int projectProgress = 75;
+    private int followerGrowth = 12;
+    private int unreadMessages = 15;
+    private int urgentMessages = 3;
+
+    // Habilidades
+    private List<Skill> skills = new()
+    {
+        new() { Name = "C#", IsHighlighted = true },
+        new() { Name = "Blazor", IsHighlighted = true },
+        new() { Name = "JavaScript", IsHighlighted = false },
+        new() { Name = "React", IsHighlighted = false },
+        new() { Name = "CSS3", IsHighlighted = true },
+        new() { Name = "UX/UI", IsHighlighted = true },
+        new() { Name = "SQL", IsHighlighted = false },
+        new() { Name = "Azure", IsHighlighted = false }
+    };
+
+    // Mensaje reciente
+    private MessagePreview? lastMessage = new()
+    {
+        Sender = "Maria García",
+        Preview = "¿Podrías revisar el diseño del nuevo..."
+    };
+
+    // Actividades recientes
+    private List<Activity> recentActivities = new()
+    {
+        new() { Type = "project", Title = "Nuevo proyecto iniciado", Description = "E-commerce Platform v2.0", TimeAgo = "2 horas" },
+        new() { Type = "message", Title = "Mensaje recibido", Description = "Consulta sobre diseño UI", TimeAgo = "4 horas" },
+        new() { Type = "follower", Title = "Nuevo seguidor", Description = "Santiago López te siguió", TimeAgo = "1 día" },
+        new() { Type = "project", Title = "Proyecto completado", Description = "Portfolio Website", TimeAgo = "2 días" }
+    };
+
+    private void ToggleSkill(Skill skill)
+    {
+        skill.IsHighlighted = !skill.IsHighlighted;
+    }
+
+    private void NavigateToProjects()
+    {
+        Navigation.NavigateTo("/projects");
+    }
+
+    private void NavigateToFollowers()
+    {
+        Navigation.NavigateTo("/counter");
+    }
+
+    private void NavigateToMessages()
+    {
+        Navigation.NavigateTo("/weather");
+    }
+
+    private void NavigateToSkills()
+    {
+        Navigation.NavigateTo("/skills");
+    }
+
+    public class Skill
+    {
+        public string Name { get; set; } = string.Empty;
+        public bool IsHighlighted { get; set; }
+    }
+
+    public class MessagePreview
+    {
+        public string Sender { get; set; } = string.Empty;
+        public string Preview { get; set; } = string.Empty;
+    }
+
+    public class Activity
+    {
+        public string Type { get; set; } = string.Empty;
+        public string Title { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string TimeAgo { get; set; } = string.Empty;
+    }
+}

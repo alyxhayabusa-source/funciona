@@ -1,0 +1,246 @@
+@page "/projects"
+
+<PageTitle>Projects - ProfileApp</PageTitle>
+
+<div class="projects-page">
+    <div class="container">
+        <!-- Header Section -->
+        <div class="page-header">
+            <div class="header-content">
+                <h1 class="page-title">
+                    <i class="bi bi-folder-fill me-3"></i>
+                    Mis Proyectos
+                </h1>
+                <p class="page-description">
+                    Una colección de mis trabajos más destacados y proyectos en desarrollo
+                </p>
+            </div>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="stats-overview">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="bi bi-check-circle-fill"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number">@completedProjects</div>
+                    <div class="stat-label">Completados</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="bi bi-clock-fill"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number">@inProgressProjects</div>
+                    <div class="stat-label">En Progreso</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="bi bi-star-fill"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number">@featuredProjects</div>
+                    <div class="stat-label">Destacados</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="bi bi-github"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number">@totalCommits</div>
+                    <div class="stat-label">Commits</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Featured Projects -->
+        <div class="featured-section">
+            <h3 class="section-title">
+                <i class="bi bi-star-fill me-2"></i>
+                Proyectos Destacados
+            </h3>
+            <div class="featured-grid">
+                @foreach (var project in featuredProjectsList)
+                {
+                    <div class="featured-card @project.Category">
+                        <div class="project-image">
+                            <div class="project-overlay">
+                                <div class="project-actions">
+                                    <a href="#" class="action-btn" title="Ver Demo">
+                                        <i class="bi bi-play-circle"></i>
+                                    </a>
+                                    <a href="#" class="action-btn" title="Ver Código">
+                                        <i class="bi bi-github"></i>
+                                    </a>
+                                    <a href="#" class="action-btn" title="Más Info">
+                                        <i class="bi bi-info-circle"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="project-badge">
+                                <span class="badge badge-featured">@project.Category</span>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <h4 class="project-title">@project.Title</h4>
+                            <p class="project-description">@project.Description</p>
+                            <div class="project-tech">
+                                @foreach (var tech in project.Technologies)
+                                {
+                                    <span class="tech-tag">@tech</span>
+                                }
+                            </div>
+                            <div class="project-stats">
+                                <div class="project-stat">
+                                    <i class="bi bi-github"></i>
+                                    <span>@project.Stars stars</span>
+                                </div>
+                                <div class="project-stat">
+                                    <i class="bi bi-eye"></i>
+                                    <span>@project.Views views</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- All Projects Grid -->
+        <div class="projects-section">
+            <h3 class="section-title">
+                <i class="bi bi-grid-3x3-gap-fill me-2"></i>
+                Todos los Proyectos
+            </h3>
+            <div class="projects-grid">
+                @foreach (var project in allProjects)
+                {
+                    <div class="project-card @project.Status">
+                        <div class="card-header">
+                            <div class="project-status">
+                                <span class="status-badge @project.Status">@project.Status</span>
+                            </div>
+                            <div class="project-date">@project.CreatedDate.ToString("MMM yyyy")</div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="project-name">@project.Title</h5>
+                            <p class="project-summary">@project.Summary</p>
+                            <div class="project-progress">
+                                <div class="progress">
+                                    <div class="progress-bar" style="width: @project.Progress%"></div>
+                                </div>
+                                <span class="progress-text">@project.Progress% completado</span>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="project-tech-mini">
+                                @foreach (var tech in project.Technologies.Take(3))
+                                {
+                                    <span class="tech-mini">@tech</span>
+                                }
+                                @if (project.Technologies.Count > 3)
+                                {
+                                    <span class="tech-more">+@(project.Technologies.Count - 3)</span>
+                                }
+                            </div>
+                            <div class="project-actions-mini">
+                                <a href="#" class="btn-mini" title="Ver Demo">
+                                    <i class="bi bi-play"></i>
+                                </a>
+                                <a href="#" class="btn-mini" title="Ver Código">
+                                    <i class="bi bi-github"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Skills Used -->
+        <div class="skills-section">
+            <h3 class="section-title">
+                <i class="bi bi-tools me-2"></i>
+                Tecnologías Utilizadas
+            </h3>
+            <div class="skills-cloud">
+                @foreach (var skill in projectSkills)
+                {
+                    <div class="skill-item @skill.Level">
+                        <span class="skill-name">@skill.Name</span>
+                        <span class="skill-count">@skill.ProjectsCount</span>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private int completedProjects = 12;
+    private int inProgressProjects = 3;
+    private int featuredProjects = 5;
+    private int totalCommits = 1247;
+
+    private List<FeaturedProject> featuredProjectsList = new()
+    {
+        new() { Title = "E-Commerce Platform", Description = "Plataforma completa de comercio electrónico con panel de administración", Category = "Web", Technologies = new() { "Blazor", "C#", "SQL Server", "Azure" }, Stars = 45, Views = 1200 },
+        new() { Title = "Task Management App", Description = "Aplicación de gestión de tareas con colaboración en tiempo real", Category = "Mobile", Technologies = new() { "React", "Node.js", "MongoDB", "Socket.io" }, Stars = 32, Views = 890 },
+        new() { Title = "Weather Dashboard", Description = "Dashboard meteorológico con visualizaciones interactivas", Category = "Web", Technologies = new() { "Vue.js", "Chart.js", "API REST", "CSS3" }, Stars = 28, Views = 650 }
+    };
+
+    private List<Project> allProjects = new()
+    {
+        new() { Title = "Portfolio Website", Summary = "Sitio web personal con diseño moderno", Status = "completed", Progress = 100, Technologies = new() { "HTML", "CSS", "JavaScript" }, CreatedDate = DateTime.Now.AddMonths(-6) },
+        new() { Title = "Blog System", Summary = "Sistema de blog con CMS integrado", Status = "in-progress", Progress = 75, Technologies = new() { "ASP.NET Core", "Entity Framework", "Bootstrap" }, CreatedDate = DateTime.Now.AddMonths(-3) },
+        new() { Title = "Mobile Game", Summary = "Juego móvil 2D con Unity", Status = "in-progress", Progress = 45, Technologies = new() { "Unity", "C#", "Blender" }, CreatedDate = DateTime.Now.AddMonths(-2) },
+        new() { Title = "API Gateway", Summary = "Gateway de API con autenticación", Status = "completed", Progress = 100, Technologies = new() { "Node.js", "Express", "JWT", "Redis" }, CreatedDate = DateTime.Now.AddMonths(-8) },
+        new() { Title = "Data Analytics Tool", Summary = "Herramienta de análisis de datos", Status = "planning", Progress = 15, Technologies = new() { "Python", "Pandas", "D3.js" }, CreatedDate = DateTime.Now.AddMonths(-1) },
+        new() { Title = "Chat Application", Summary = "Aplicación de chat en tiempo real", Status = "completed", Progress = 100, Technologies = new() { "React", "Socket.io", "MongoDB" }, CreatedDate = DateTime.Now.AddMonths(-5) }
+    };
+
+    private List<ProjectSkill> projectSkills = new()
+    {
+        new() { Name = "C#", ProjectsCount = 8, Level = "expert" },
+        new() { Name = "Blazor", ProjectsCount = 5, Level = "advanced" },
+        new() { Name = "React", ProjectsCount = 6, Level = "advanced" },
+        new() { Name = "JavaScript", ProjectsCount = 12, Level = "expert" },
+        new() { Name = "SQL Server", ProjectsCount = 7, Level = "advanced" },
+        new() { Name = "Azure", ProjectsCount = 4, Level = "intermediate" },
+        new() { Name = "Node.js", ProjectsCount = 5, Level = "advanced" },
+        new() { Name = "Python", ProjectsCount = 3, Level = "intermediate" },
+        new() { Name = "Unity", ProjectsCount = 2, Level = "beginner" },
+        new() { Name = "Docker", ProjectsCount = 4, Level = "intermediate" }
+    };
+
+    public class FeaturedProject
+    {
+        public string Title { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string Category { get; set; } = string.Empty;
+        public List<string> Technologies { get; set; } = new();
+        public int Stars { get; set; }
+        public int Views { get; set; }
+    }
+
+    public class Project
+    {
+        public string Title { get; set; } = string.Empty;
+        public string Summary { get; set; } = string.Empty;
+        public string Status { get; set; } = string.Empty;
+        public int Progress { get; set; }
+        public List<string> Technologies { get; set; } = new();
+        public DateTime CreatedDate { get; set; }
+    }
+
+    public class ProjectSkill
+    {
+        public string Name { get; set; } = string.Empty;
+        public int ProjectsCount { get; set; }
+        public string Level { get; set; } = string.Empty;
+    }
+}

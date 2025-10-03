@@ -1,0 +1,710 @@
+/* Variables para Counter */
+:root {
+    --clr-primary: #667eea;
+    --clr-primary-dark: #5a6fd8;
+    --clr-secondary: #764ba2;
+    --clr-secondary-dark: #6a4190;
+    --clr-accent: #f093fb;
+    --clr-success: #4facfe;
+    --clr-warning: #43e97b;
+    --clr-danger: #fa709a;
+    --clr-dark: #0f0f23;
+    --clr-dark-light: #1a1a2e;
+    --clr-dark-lighter: #16213e;
+    --clr-light: #f8fafc;
+    --clr-text-primary: #ffffff;
+    --clr-text-secondary: #e2e8f0;
+    --clr-text-muted: #94a3b8;
+    --clr-card-bg: rgba(255, 255, 255, 0.05);
+    --clr-card-hover: rgba(255, 255, 255, 0.1);
+    --clr-card-border: rgba(255, 255, 255, 0.08);
+    --shadow-default: 0 20px 60px rgba(0, 0, 0, 0.4);
+    --shadow-hover: 0 30px 80px rgba(0, 0, 0, 0.6);
+    --shadow-card: 0 10px 40px rgba(0, 0, 0, 0.3);
+    --shadow-glow: 0 0 40px rgba(102, 126, 234, 0.3);
+    --border-radius: 1.5rem;
+    --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --gradient-primary: linear-gradient(135deg, var(--clr-primary) 0%, var(--clr-secondary) 100%);
+    --gradient-accent: linear-gradient(135deg, var(--clr-accent) 0%, var(--clr-success) 100%);
+    --gradient-success: linear-gradient(135deg, var(--clr-success) 0%, var(--clr-warning) 100%);
+    --gradient-danger: linear-gradient(135deg, var(--clr-danger) 0%, #ff4757 100%);
+}
+
+/* Página del contador */
+.counter-page {
+    min-height: 100vh;
+    padding: 2rem 0;
+    animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Header de la página */
+.page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    animation: slideInDown 1s ease-out 0.2s both;
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.header-content {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.page-title {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.page-title i {
+    font-size: 3.5rem;
+    color: var(--clr-primary);
+    filter: drop-shadow(0 0 20px rgba(102, 126, 234, 0.6));
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 20px rgba(102, 126, 234, 0.6));
+    }
+    50% {
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 30px rgba(102, 126, 234, 0.8));
+    }
+}
+
+.page-description {
+    font-size: 1.2rem;
+    color: var(--clr-text-muted);
+    line-height: 1.6;
+}
+
+/* Card principal del contador */
+.counter-card {
+    background: var(--clr-card-bg);
+    backdrop-filter: blur(30px);
+    border: 1px solid var(--clr-card-border);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-card);
+    padding: 3rem;
+    margin-bottom: 3rem;
+    position: relative;
+    overflow: hidden;
+    animation: slideInUp 1s ease-out 0.4s both;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(60px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.counter-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: var(--gradient-primary);
+    animation: expandWidth 2s ease-out 0.6s both;
+}
+
+@keyframes expandWidth {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+.card-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.counter-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem;
+    background: var(--gradient-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-glow);
+    animation: rotateIn 1s ease-out 0.8s both;
+}
+
+@keyframes rotateIn {
+    from {
+        opacity: 0;
+        transform: rotate(-180deg) scale(0);
+    }
+    to {
+        opacity: 1;
+        transform: rotate(0deg) scale(1);
+    }
+}
+
+.counter-icon i {
+    font-size: 2.5rem;
+    color: var(--clr-text-primary);
+}
+
+.card-header h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.card-header p {
+    color: var(--clr-text-muted);
+    font-size: 1.1rem;
+}
+
+/* Display del contador */
+.counter-display {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--clr-card-border);
+    position: relative;
+    overflow: hidden;
+}
+
+.counter-display::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--gradient-primary);
+    opacity: 0.05;
+    z-index: -1;
+}
+
+.counter-number {
+    font-size: 5rem;
+    font-weight: 900;
+    margin-bottom: 0.5rem;
+    transition: var(--transition);
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+    animation: numberGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes numberGlow {
+    from {
+        text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+    }
+    to {
+        text-shadow: 0 0 50px rgba(102, 126, 234, 0.6);
+    }
+}
+
+.counter-number.positive {
+    background: var(--gradient-success);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.counter-number.negative {
+    background: var(--gradient-danger);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.counter-label {
+    font-size: 1.2rem;
+    color: var(--clr-text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Controles del contador */
+.counter-controls {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+}
+
+.btn-counter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1.5rem 2rem;
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: var(--transition);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    min-width: 120px;
+    backdrop-filter: blur(10px);
+}
+
+.btn-counter::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: var(--border-radius);
+    transition: opacity 0.4s ease;
+    z-index: -1;
+}
+
+.btn-counter:not(:disabled):hover::before {
+    opacity: 1;
+}
+
+.btn-counter:not(:disabled):hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: var(--shadow-hover);
+}
+
+.btn-counter:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.btn-counter.increment {
+    background: var(--gradient-success);
+    color: var(--clr-text-primary);
+    box-shadow: 0 8px 25px rgba(79, 172, 254, 0.3);
+}
+
+.btn-counter.decrement {
+    background: var(--gradient-danger);
+    color: var(--clr-text-primary);
+    box-shadow: 0 8px 25px rgba(250, 112, 154, 0.3);
+}
+
+.btn-counter.reset {
+    background: var(--gradient-primary);
+    color: var(--clr-text-primary);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.btn-counter i {
+    font-size: 1.8rem;
+    transition: var(--transition);
+}
+
+.btn-counter:not(:disabled):hover i {
+    transform: scale(1.2) rotate(10deg);
+}
+
+/* Estadísticas del contador */
+.counter-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    animation: slideInUp 1s ease-out 1s both;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--clr-card-border);
+    transition: var(--transition);
+}
+
+.stat-item:hover {
+    background: var(--clr-card-hover);
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-glow);
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--gradient-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.stat-icon i {
+    font-size: 1.5rem;
+    color: var(--clr-text-primary);
+}
+
+.stat-content {
+    flex: 1;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 800;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.25rem;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: var(--clr-text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Sección de logros */
+.achievements-section {
+    margin-bottom: 3rem;
+    animation: slideInUp 1s ease-out 1.2s both;
+}
+
+.section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.achievement-card {
+    background: var(--clr-card-bg);
+    backdrop-filter: blur(30px);
+    border: 1px solid var(--clr-card-border);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.achievement-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    transition: opacity 0.4s ease;
+}
+
+.achievement-card.bronze::before {
+    background: linear-gradient(90deg, #cd7f32, #b8860b);
+}
+
+.achievement-card.silver::before {
+    background: linear-gradient(90deg, #c0c0c0, #a8a8a8);
+}
+
+.achievement-card.gold::before {
+    background: linear-gradient(90deg, #ffd700, #ffed4e);
+}
+
+.achievement-card.platinum::before {
+    background: linear-gradient(90deg, #e5e4e2, #b8b8b8);
+}
+
+.achievement-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--shadow-hover);
+    background: var(--clr-card-hover);
+}
+
+.achievement-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.achievement-card.bronze .achievement-icon {
+    background: linear-gradient(135deg, #cd7f32, #b8860b);
+}
+
+.achievement-card.silver .achievement-icon {
+    background: linear-gradient(135deg, #c0c0c0, #a8a8a8);
+}
+
+.achievement-card.gold .achievement-icon {
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+}
+
+.achievement-card.platinum .achievement-icon {
+    background: linear-gradient(135deg, #e5e4e2, #b8b8b8);
+}
+
+.achievement-icon i {
+    font-size: 2rem;
+    color: var(--clr-text-primary);
+}
+
+.achievement-content h4 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--clr-text-primary);
+}
+
+.achievement-content p {
+    color: var(--clr-text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.achievement-content small {
+    color: var(--clr-text-muted);
+    font-weight: 600;
+}
+
+/* Acciones rápidas */
+.quick-actions {
+    animation: slideInUp 1s ease-out 1.4s both;
+}
+
+.actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1.5rem;
+}
+
+.action-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1.5rem 1rem;
+    background: var(--clr-card-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--clr-card-border);
+    border-radius: var(--border-radius);
+    color: var(--clr-text-primary);
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: var(--transition);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.action-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--gradient-primary);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: -1;
+}
+
+.action-btn:hover::before {
+    opacity: 1;
+}
+
+.action-btn:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: var(--shadow-glow);
+    border-color: var(--clr-primary);
+}
+
+.action-btn i {
+    font-size: 1.8rem;
+    transition: var(--transition);
+}
+
+.action-btn:hover i {
+    transform: scale(1.2) rotate(10deg);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .page-title {
+        font-size: 2.5rem;
+        flex-direction: column;
+    }
+
+    .counter-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .counter-number {
+        font-size: 4rem;
+    }
+
+    .counter-controls {
+        gap: 1rem;
+    }
+
+    .btn-counter {
+        min-width: 100px;
+        padding: 1.2rem 1.5rem;
+    }
+
+    .counter-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .achievements-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .achievement-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .actions-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .counter-page {
+        padding: 1rem 0;
+    }
+
+    .page-title {
+        font-size: 2rem;
+    }
+
+    .counter-card {
+        padding: 1.5rem 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .counter-number {
+        font-size: 3rem;
+    }
+
+    .counter-controls {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .btn-counter {
+        width: 100%;
+        max-width: 200px;
+    }
+
+    .actions-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Animaciones de entrada escalonadas */
+.counter-stats .stat-item:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.counter-stats .stat-item:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.counter-stats .stat-item:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+/* Efectos de focus para accesibilidad */
+.btn-counter:focus,
+.action-btn:focus {
+    outline: 3px solid var(--clr-primary);
+    outline-offset: 3px;
+}
+
+/* Animación de logros */
+@keyframes achievementPop {
+    0% {
+        opacity: 0;
+        transform: scale(0.5) rotate(-10deg);
+    }
+    50% {
+        transform: scale(1.1) rotate(5deg);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+.achievement-card {
+    animation: achievementPop 0.6s ease-out;
+}

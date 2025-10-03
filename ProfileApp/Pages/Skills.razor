@@ -1,0 +1,352 @@
+@page "/skills"
+
+<PageTitle>Skills - ProfileApp</PageTitle>
+
+<div class="skills-page">
+    <div class="container">
+        <!-- Header Section -->
+        <div class="page-header">
+            <div class="header-content">
+                <h1 class="page-title">
+                    <i class="bi bi-gear-fill me-3"></i>
+                    Habilidades
+                </h1>
+                <p class="page-description">
+                    Tecnologías, herramientas y competencias que domino y utilizo en mis proyectos
+                </p>
+            </div>
+        </div>
+
+        <!-- Skills Statistics -->
+        <div class="skills-stats">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="bi bi-code-slash"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number">@totalSkills</div>
+                    <div class="stat-label">Tecnologías</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="bi bi-trophy-fill"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number">@expertSkills</div>
+                            <div class="stat-label">Nivel experto</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="bi bi-award-fill"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number">@certifications.Count</div>
+                    <div class="stat-label">Certificaciones</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="bi bi-calendar-check-fill"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number">@experienceYears</div>
+                            <div class="stat-label">Años de experiencia</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Skills Categories -->
+        <div class="skills-categories">
+            <div class="skill-category">
+                <div class="category-header">
+                    <div class="category-icon">
+                        <i class="bi bi-code-slash"></i>
+                    </div>
+                    <div class="category-info">
+                        <h3>Frontend Development</h3>
+                        <p>Interfaces de usuario modernas y responsivas</p>
+                    </div>
+                </div>
+                <div class="skills-list">
+                    @foreach (var skill in frontendSkills)
+                    {
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">@skill.Name</span>
+                                <span class="skill-level @skill.Level">@skill.Level</span>
+                            </div>
+                            <p class="skill-description">@skill.Description</p>
+                            <div class="skill-progress">
+                                <div class="progress">
+                                    <div class="progress-bar @skill.Level" style="width: @skill.Progress%"></div>
+                                </div>
+                                <div class="skill-progress-text">@skill.Progress% de dominio</div>
+                            </div>
+                            <div class="skill-projects">
+                                @foreach (var project in skill.Projects)
+                                {
+                                    <span class="skill-project">@project</span>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <div class="category-header">
+                    <div class="category-icon">
+                        <i class="bi bi-server"></i>
+                    </div>
+                    <div class="category-info">
+                        <h3>Backend Development</h3>
+                        <p>APIs, bases de datos y arquitectura de servidores</p>
+                    </div>
+                </div>
+                <div class="skills-list">
+                    @foreach (var skill in backendSkills)
+                    {
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">@skill.Name</span>
+                                <span class="skill-level @skill.Level">@skill.Level</span>
+                            </div>
+                            <p class="skill-description">@skill.Description</p>
+                            <div class="skill-progress">
+                                <div class="progress">
+                                    <div class="progress-bar @skill.Level" style="width: @skill.Progress%"></div>
+                                </div>
+                                <div class="skill-progress-text">@skill.Progress% de dominio</div>
+                            </div>
+                            <div class="skill-projects">
+                                @foreach (var project in skill.Projects)
+                                {
+                                    <span class="skill-project">@project</span>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <div class="category-header">
+                    <div class="category-icon">
+                        <i class="bi bi-cloud-fill"></i>
+                    </div>
+                    <div class="category-info">
+                        <h3>Cloud & DevOps</h3>
+                        <p>Infraestructura en la nube y automatización</p>
+                    </div>
+                </div>
+                <div class="skills-list">
+                    @foreach (var skill in cloudSkills)
+                    {
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">@skill.Name</span>
+                                <span class="skill-level @skill.Level">@skill.Level</span>
+                            </div>
+                            <p class="skill-description">@skill.Description</p>
+                            <div class="skill-progress">
+                                <div class="progress">
+                                    <div class="progress-bar @skill.Level" style="width: @skill.Progress%"></div>
+                                </div>
+                                <div class="skill-progress-text">@skill.Progress% de dominio</div>
+                            </div>
+                            <div class="skill-projects">
+                                @foreach (var project in skill.Projects)
+                                {
+                                    <span class="skill-project">@project</span>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <div class="category-header">
+                    <div class="category-icon">
+                        <i class="bi bi-palette-fill"></i>
+                    </div>
+                    <div class="category-info">
+                        <h3>Design & UX</h3>
+                        <p>Diseño de interfaces y experiencia de usuario</p>
+                    </div>
+                </div>
+                <div class="skills-list">
+                    @foreach (var skill in designSkills)
+                    {
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">@skill.Name</span>
+                                <span class="skill-level @skill.Level">@skill.Level</span>
+                            </div>
+                            <p class="skill-description">@skill.Description</p>
+                            <div class="skill-progress">
+                                <div class="progress">
+                                    <div class="progress-bar @skill.Level" style="width: @skill.Progress%"></div>
+                                </div>
+                                <div class="skill-progress-text">@skill.Progress% de dominio</div>
+                            </div>
+                            <div class="skill-projects">
+                                @foreach (var project in skill.Projects)
+                                {
+                                    <span class="skill-project">@project</span>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Skills Cloud -->
+        <div class="skills-cloud-section">
+            <h3 class="section-title">
+                <i class="bi bi-cloud-fill me-2"></i>
+                Nube de habilidades
+            </h3>
+            <div class="skills-cloud">
+                @foreach (var skill in allSkillsCloud)
+                {
+                    <div class="skill-cloud-item @skill.Level" title="@skill.Experience años de experiencia">
+                        <span class="skill-cloud-name">@skill.Name</span>
+                        <span class="skill-cloud-experience">@skill.Experience</span>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Certifications -->
+        <div class="certifications-section">
+            <h3 class="section-title">
+                <i class="bi bi-award-fill me-2"></i>
+                Certificaciones
+            </h3>
+            <div class="certifications-grid">
+                @foreach (var cert in certifications)
+                {
+                    <div class="certification-card">
+                        <div class="cert-header">
+                            <div class="cert-icon">
+                                <i class="@cert.Icon"></i>
+                            </div>
+                            <div class="cert-info">
+                                <h4>@cert.Title</h4>
+                                <p>@cert.Issuer</p>
+                            </div>
+                        </div>
+                        <div class="cert-details">
+                            @cert.Description
+                        </div>
+                        <div class="cert-meta">
+                            <span class="cert-date">@cert.IssueDate.ToString("MMMM yyyy")</span>
+                            <span class="cert-credential">@cert.CredentialId</span>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private int totalSkills = 25;
+    private int expertSkills = 8;
+    private int experienceYears = 5;
+
+    private List<Skill> frontendSkills = new()
+    {
+        new() { Name = "HTML5", Level = "expert", Progress = 95, Description = "Marcado semántico y accesibilidad web", Projects = new() { "Portfolio", "E-commerce", "Blog" } },
+        new() { Name = "CSS3", Level = "expert", Progress = 90, Description = "Estilos modernos, Flexbox, Grid y animaciones", Projects = new() { "Portfolio", "Dashboard", "Landing Page" } },
+        new() { Name = "JavaScript", Level = "advanced", Progress = 85, Description = "ES6+, DOM manipulation, async programming", Projects = new() { "Weather App", "Task Manager", "API Client" } },
+        new() { Name = "React", Level = "advanced", Progress = 80, Description = "Componentes, hooks, state management", Projects = new() { "Task App", "Social Media", "Dashboard" } },
+        new() { Name = "Vue.js", Level = "intermediate", Progress = 70, Description = "Vue 3, Composition API, Vuex", Projects = new() { "Weather Dashboard", "Admin Panel" } },
+        new() { Name = "Blazor", Level = "expert", Progress = 92, Description = "Server-side y WebAssembly, componentes", Projects = new() { "ProfileApp", "E-commerce", "CRM" } }
+    };
+
+    private List<Skill> backendSkills = new()
+    {
+        new() { Name = "C#", Level = "expert", Progress = 95, Description = ".NET Core, Entity Framework, LINQ", Projects = new() { "API Gateway", "E-commerce", "CRM" } },
+        new() { Name = "ASP.NET Core", Level = "advanced", Progress = 88, Description = "Web APIs, MVC, SignalR", Projects = new() { "E-commerce API", "Real-time Chat", "Blog System" } },
+        new() { Name = "SQL Server", Level = "advanced", Progress = 85, Description = "Consultas complejas, optimización, stored procedures", Projects = new() { "E-commerce", "CRM", "Analytics" } },
+        new() { Name = "Node.js", Level = "intermediate", Progress = 75, Description = "Express, middleware, REST APIs", Projects = new() { "API Gateway", "Chat App", "Weather API" } },
+        new() { Name = "Python", Level = "intermediate", Progress = 70, Description = "Django, Flask, data analysis", Projects = new() { "Data Analytics", "Web Scraping", "Automation" } }
+    };
+
+    private List<Skill> cloudSkills = new()
+    {
+        new() { Name = "Azure", Level = "intermediate", Progress = 75, Description = "App Services, SQL Database, Blob Storage", Projects = new() { "E-commerce", "API Hosting" } },
+        new() { Name = "Docker", Level = "intermediate", Progress = 70, Description = "Containerization, Docker Compose", Projects = new() { "API Gateway", "Microservices" } },
+        new() { Name = "Git", Level = "advanced", Progress = 85, Description = "Version control, branching strategies", Projects = new() { "All Projects" } },
+        new() { Name = "CI/CD", Level = "beginner", Progress = 60, Description = "GitHub Actions, Azure DevOps", Projects = new() { "E-commerce", "API Gateway" } }
+    };
+
+    private List<Skill> designSkills = new()
+    {
+        new() { Name = "Figma", Level = "intermediate", Progress = 75, Description = "Diseño de interfaces y prototipado", Projects = new() { "Portfolio", "E-commerce UI", "Dashboard" } },
+        new() { Name = "Adobe XD", Level = "beginner", Progress = 65, Description = "Wireframes y mockups", Projects = new() { "Mobile App", "Landing Page" } },
+        new() { Name = "Photoshop", Level = "intermediate", Progress = 70, Description = "Edición de imágenes y assets", Projects = new() { "Portfolio", "Social Media" } },
+        new() { Name = "UI/UX Principles", Level = "advanced", Progress = 80, Description = "Diseño centrado en el usuario", Projects = new() { "All Projects" } }
+    };
+
+    private List<CloudSkill> allSkillsCloud = new()
+    {
+        new() { Name = "C#", Level = "expert", Experience = 5 },
+        new() { Name = "Blazor", Level = "expert", Experience = 4 },
+        new() { Name = "JavaScript", Level = "expert", Experience = 5 },
+        new() { Name = "HTML5", Level = "expert", Experience = 6 },
+        new() { Name = "CSS3", Level = "expert", Experience = 6 },
+        new() { Name = "React", Level = "advanced", Experience = 3 },
+        new() { Name = "ASP.NET Core", Level = "advanced", Experience = 4 },
+        new() { Name = "SQL Server", Level = "advanced", Experience = 4 },
+        new() { Name = "Azure", Level = "intermediate", Experience = 2 },
+        new() { Name = "Node.js", Level = "intermediate", Experience = 2 },
+        new() { Name = "Python", Level = "intermediate", Experience = 2 },
+        new() { Name = "Vue.js", Level = "intermediate", Experience = 1 },
+        new() { Name = "Docker", Level = "intermediate", Experience = 1 },
+        new() { Name = "Figma", Level = "intermediate", Experience = 2 },
+        new() { Name = "Git", Level = "advanced", Experience = 4 },
+        new() { Name = "UI/UX", Level = "advanced", Experience = 3 },
+        new() { Name = "Photoshop", Level = "intermediate", Experience = 2 },
+        new() { Name = "Adobe XD", Level = "beginner", Experience = 1 },
+        new() { Name = "CI/CD", Level = "beginner", Experience = 1 }
+    };
+
+    private List<Certification> certifications = new()
+    {
+        new() { Title = "Microsoft Azure Fundamentals", Issuer = "Microsoft", Description = "Fundamentos de servicios en la nube de Azure", IssueDate = DateTime.Now.AddMonths(-6), CredentialId = "AZ-900", Icon = "bi bi-cloud-fill" },
+        new() { Title = "C# Programming", Issuer = "Microsoft Learn", Description = "Programación orientada a objetos con C#", IssueDate = DateTime.Now.AddMonths(-8), CredentialId = "C#-001", Icon = "bi bi-code-slash" },
+        new() { Title = "React Developer", Issuer = "Meta", Description = "Desarrollo de aplicaciones web con React", IssueDate = DateTime.Now.AddMonths(-4), CredentialId = "REACT-001", Icon = "bi bi-react" }
+    };
+
+    public class Skill
+    {
+        public string Name { get; set; } = string.Empty;
+        public string Level { get; set; } = string.Empty;
+        public int Progress { get; set; }
+        public string Description { get; set; } = string.Empty;
+        public List<string> Projects { get; set; } = new();
+    }
+
+    public class CloudSkill
+    {
+        public string Name { get; set; } = string.Empty;
+        public string Level { get; set; } = string.Empty;
+        public int Experience { get; set; }
+    }
+
+    public class Certification
+    {
+        public string Title { get; set; } = string.Empty;
+        public string Issuer { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public DateTime IssueDate { get; set; }
+        public string CredentialId { get; set; } = string.Empty;
+        public string Icon { get; set; } = string.Empty;
+    }
+}

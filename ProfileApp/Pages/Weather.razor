@@ -1,0 +1,285 @@
+@page "/weather"
+@layout MainLayout
+@inject HttpClient Http
+
+<PageTitle>Weather - ProfileApp</PageTitle>
+
+<div class="weather-page">
+    <div class="container">
+        <!-- Header Section -->
+        <div class="page-header">
+            <div class="header-content">
+                <h1 class="page-title">
+                    <i class="bi bi-cloud-sun-fill me-3"></i>
+                    Weather Forecast
+                </h1>
+                <p class="page-description">
+                    Pronóstico del tiempo con datos en tiempo real y visualizaciones modernas
+                </p>
+            </div>
+        </div>
+
+        @if (forecasts == null)
+        {
+            <!-- Loading State -->
+            <div class="loading-section">
+                <div class="loading-card">
+                    <div class="loading-spinner">
+                        <i class="bi bi-cloud-sun"></i>
+                    </div>
+                    <h3>Cargando datos del clima...</h3>
+                    <p>Obteniendo información meteorológica actualizada</p>
+                </div>
+            </div>
+        }
+        else
+        {
+            <!-- Weather Overview Cards -->
+            <div class="weather-overview">
+                <div class="overview-card current-weather">
+                    <div class="weather-icon">
+                        <i class="bi bi-sun-fill"></i>
+                    </div>
+                    <div class="weather-info">
+                        <h3>Hoy</h3>
+                        <div class="temperature">
+                            <span class="temp-value">@forecasts[0].TemperatureC</span>
+                            <span class="temp-unit">°C</span>
+                        </div>
+                        <p class="weather-summary">@forecasts[0].Summary</p>
+                    </div>
+                </div>
+
+                <div class="overview-card stats-card">
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="bi bi-thermometer-half"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value">@forecasts.Average(f => f.TemperatureC).ToString("F1")</div>
+                            <div class="stat-label">Temperatura Promedio</div>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="bi bi-graph-up"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value">@forecasts.Max(f => f.TemperatureC)</div>
+                            <div class="stat-label">Temperatura Máxima</div>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="bi bi-graph-down"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value">@forecasts.Min(f => f.TemperatureC)</div>
+                            <div class="stat-label">Temperatura Mínima</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Forecast -->
+            <div class="forecast-section">
+                <h3 class="section-title">
+                    <i class="bi bi-calendar-week-fill me-2"></i>
+                    Pronóstico Detallado
+                </h3>
+                <div class="forecast-grid">
+                    @foreach (var forecast in forecasts)
+                    {
+                        <div class="forecast-card @GetWeatherClass(forecast.TemperatureC)">
+                            <div class="forecast-header">
+                                <div class="forecast-date">
+                                    <div class="day">@forecast.Date.DayOfWeek.ToString()</div>
+                                    <div class="date">@forecast.Date.ToShortDateString()</div>
+                                </div>
+                                <div class="weather-icon-small">
+                                    <i class="@GetWeatherIcon(forecast.TemperatureC)"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="temperature-range">
+                                <div class="temp-display">
+                                    <span class="temp-c">@forecast.TemperatureC°C</span>
+                                    <span class="temp-f">@forecast.TemperatureF°F</span>
+                                </div>
+                                <div class="temp-bar">
+                                    <div class="temp-fill" style="width: @GetTemperaturePercentage(forecast.TemperatureC)%"></div>
+                                </div>
+                            </div>
+
+                            <div class="weather-summary-card">
+                                <p>@forecast.Summary</p>
+                            </div>
+
+                            <div class="forecast-footer">
+                                <div class="weather-condition">
+                                    <i class="bi bi-droplet"></i>
+                                    <span>Humedad: @GetRandomHumidity()%</span>
+                                </div>
+                                <div class="weather-condition">
+                                    <i class="bi bi-wind"></i>
+                                    <span>Viento: @GetRandomWind() km/h</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Weather Chart -->
+            <div class="weather-chart-section">
+                <h3 class="section-title">
+                    <i class="bi bi-graph-up me-2"></i>
+                    Gráfico de Temperaturas
+                </h3>
+                <div class="chart-container">
+                    <div class="temperature-chart">
+                        @foreach (var forecast in forecasts)
+                        {
+                            <div class="chart-bar" style="height: @GetTemperaturePercentage(forecast.TemperatureC)%">
+                                <div class="chart-value">@forecast.TemperatureC°</div>
+                                <div class="chart-label">@forecast.Date.ToString("ddd")</div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weather Insights -->
+            <div class="insights-section">
+                <h3 class="section-title">
+                    <i class="bi bi-lightbulb-fill me-2"></i>
+                    Insights del Clima
+                </h3>
+                <div class="insights-grid">
+                    <div class="insight-card">
+                        <div class="insight-icon">
+                            <i class="bi bi-umbrella"></i>
+                        </div>
+                        <div class="insight-content">
+                            <h4>Recomendación</h4>
+                            <p>@GetWeatherRecommendation()</p>
+                        </div>
+                    </div>
+                    <div class="insight-card">
+                        <div class="insight-icon">
+                            <i class="bi bi-calendar-check"></i>
+                        </div>
+                        <div class="insight-content">
+                            <h4>Mejor Día</h4>
+                            <p>@GetBestDay()</p>
+                        </div>
+                    </div>
+                    <div class="insight-card">
+                        <div class="insight-icon">
+                            <i class="bi bi-thermometer-sun"></i>
+                        </div>
+                        <div class="insight-content">
+                            <h4>Tendencia</h4>
+                            <p>@GetTemperatureTrend()</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private WeatherForecast[]? forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
+    }
+
+    private string GetWeatherClass(int temperature)
+    {
+        return temperature switch
+        {
+            >= 30 => "hot",
+            >= 20 => "warm",
+            >= 10 => "mild",
+            >= 0 => "cool",
+            _ => "cold"
+        };
+    }
+
+    private string GetWeatherIcon(int temperature)
+    {
+        return temperature switch
+        {
+            >= 30 => "bi bi-sun-fill",
+            >= 20 => "bi bi-cloud-sun-fill",
+            >= 10 => "bi bi-cloud-fill",
+            >= 0 => "bi bi-cloud-rain-fill",
+            _ => "bi bi-snow"
+        };
+    }
+
+    private int GetTemperaturePercentage(int temperature)
+    {
+        // Normalizar temperatura entre 0-100% (asumiendo rango -10 a 40°C)
+        return Math.Max(5, Math.Min(95, (int)((temperature + 10) / 50.0 * 100)));
+    }
+
+    private int GetRandomHumidity()
+    {
+        return new Random().Next(40, 90);
+    }
+
+    private int GetRandomWind()
+    {
+        return new Random().Next(5, 25);
+    }
+
+    private string GetWeatherRecommendation()
+    {
+        if (forecasts == null) return "Cargando recomendaciones...";
+        
+        var avgTemp = forecasts.Average(f => f.TemperatureC);
+        return avgTemp switch
+        {
+            >= 25 => "¡Perfecto para actividades al aire libre! Recuerda usar protector solar.",
+            >= 15 => "Excelente clima para caminar o hacer ejercicio al aire libre.",
+            >= 5 => "Clima fresco, ideal para una chaqueta ligera.",
+            _ => "Clima frío, asegúrate de abrigarte bien."
+        };
+    }
+
+    private string GetBestDay()
+    {
+        if (forecasts == null) return "Analizando...";
+        
+        var bestDay = forecasts.OrderByDescending(f => f.TemperatureC).First();
+        return $"El mejor día será {bestDay.Date.ToString("dddd")} con {bestDay.TemperatureC}°C";
+    }
+
+    private string GetTemperatureTrend()
+    {
+        if (forecasts == null) return "Analizando tendencia...";
+        
+        var firstTemp = forecasts[0].TemperatureC;
+        var lastTemp = forecasts[^1].TemperatureC;
+        var diff = lastTemp - firstTemp;
+        
+        return diff switch
+        {
+            > 5 => "Temperaturas en aumento 📈",
+            < -5 => "Temperaturas en descenso 📉",
+            _ => "Temperaturas estables 📊"
+        };
+    }
+
+    public class WeatherForecast
+    {
+        public DateOnly Date { get; set; }
+        public int TemperatureC { get; set; }
+        public string? Summary { get; set; }
+        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    }
+}
