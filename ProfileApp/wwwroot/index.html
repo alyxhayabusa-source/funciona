@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,23 +10,48 @@
     <link rel="stylesheet" href="css/app.css" />
     <link rel="icon" type="image/png" href="favicon.png" />
     <link href="ProfileApp.styles.css" rel="stylesheet" />
+    <script type="text/javascript">
+        // Función para cargar Blazor
+        function loadBlazor() {
+            const script = document.createElement('script');
+            script.src = '_framework/blazor.webassembly.js';
+            document.body.appendChild(script);
+            
+            // Mostrar el loader
+            const appDiv = document.createElement('div');
+            appDiv.id = 'app';
+            appDiv.innerHTML = `
+                <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Cargando...</span>
+                    </div>
+                </div>`;
+            document.body.appendChild(appDiv);
+        }
+        
+        // Cargar Blazor cuando el DOM esté listo
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadBlazor);
+        } else {
+            loadBlazor();
+        }
+    </script>
 </head>
-
 <body>
-    <div id="app">
-        <svg class="loading-progress">
-            <circle r="40%" cx="50%" cy="50%" />
-            <circle r="40%" cx="50%" cy="50%" />
-        </svg>
-        <div class="loading-progress-text"></div>
+    <noscript>
+        <div style="text-align: center; margin-top: 50px;">
+            <h1>Se requiere JavaScript</h1>
+            <p>Esta aplicación requiere JavaScript para funcionar correctamente. Por favor, habilita JavaScript en tu navegador.</p>
+        </div>
+    </noscript>
+    
+    <div id="blazor-error-ui" style="display: none;">
+        <div class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">¡Ha ocurrido un error!</h4>
+            <p>Se ha producido un error inesperado. Por favor, recarga la página para continuar.</p>
+            <hr>
+            <button onclick="location.reload()" class="btn btn-primary">Recargar</button>
+        </div>
     </div>
-
-    <div id="blazor-error-ui">
-        An unhandled error has occurred.
-        <a href="." class="reload">Reload</a>
-        <span class="dismiss">🗙</span>
-    </div>
-    <script src="_framework/blazor.webassembly.js"></script>
 </body>
-
 </html>

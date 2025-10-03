@@ -2,24 +2,61 @@
 <html>
 <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ProfileApp</title>
     <base href="/" />
-    <script type='module'>
-        const segment = 1;
-        sessionStorage.redirect = location.href.split('/').slice(0, 1 + segment).join('/') + '/#' + location.pathname.slice(1).split('/').slice(segment).join('/') + location.search + location.hash;
-        document.write('<script src="_framework/blazor.webassembly.js"><\/script>');
-        document.write('<link href="css/app.css" rel="stylesheet" />');
-        document.write('<div id="app">Loading...</div>');
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="css/app.css" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link href="ProfileApp.styles.css" rel="stylesheet" />
+    <script type="text/javascript">
+        // Guarda la ruta actual antes de que Blazor cargue
+        sessionStorage.setItem('redirect', location.pathname + location.search + location.hash);
+        
+        // Función para cargar Blazor
+        function loadBlazor() {
+            const script = document.createElement('script');
+            script.src = '_framework/blazor.webassembly.js';
+            document.body.appendChild(script);
+            
+            // Mostrar el loader
+            const appDiv = document.createElement('div');
+            appDiv.id = 'app';
+            appDiv.innerHTML = `
+                <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Cargando...</span>
+                    </div>
+                </div>`;
+            document.body.appendChild(appDiv);
+        }
+        
+        // Cargar Blazor cuando el DOM esté listo
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadBlazor);
+        } else {
+            loadBlazor();
+        }
     </script>
 </head>
 <body>
+    <noscript>
+        <div style="text-align: center; margin-top: 50px;">
+            <h1>Se requiere JavaScript</h1>
+            <p>Esta aplicación requiere JavaScript para funcionar correctamente. Por favor, habilita JavaScript en tu navegador.</p>
+        </div>
+    </noscript>
+    
     <script>
-        // Redirigir a la ruta correcta
-        if (sessionStorage.redirect) {
-            const redirect = sessionStorage.redirect;
-            sessionStorage.removeItem('redirect');
-            window.history.replaceState({}, '', redirect);
-        }
+        // Redirigir a la ruta guardada después de que Blazor cargue
+        window.addEventListener('load', function() {
+            const redirect = sessionStorage.getItem('redirect');
+            if (redirect) {
+                sessionStorage.removeItem('redirect');
+                history.replaceState({}, '', redirect);
+            }
+        });
     </script>
 </body>
 </html>
