@@ -1,25 +1,29 @@
 using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.JSInterop;
 using ProfileApp;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
-// Configurar la ruta base
+// Configurar la ruta base para GitHub Pages
 var baseAddress = new Uri(builder.HostEnvironment.BaseAddress);
-var basePath = "/ProfileApp/";
+var basePath = "/funciona/";
 
-// Si estamos en localhost, usar ruta raíz
+// Solo usar ruta raíz para localhost
 if (baseAddress.Host.Contains("localhost"))
 {
     basePath = "/";
+}
+
+// Forzar https en producción
+if (!baseAddress.Host.Contains("localhost"))
+{
+    baseAddress = new Uri($"https://{baseAddress.Host}{baseAddress.Port != 80 ? $":{baseAddress.Port}" : ""}{basePath}");
 }
 
 // Configurar el servicio HttpClient
 builder.Services.AddScoped(sp => new HttpClient 
 { 
     BaseAddress = new Uri($"{baseAddress.Scheme}://{baseAddress.Host}{baseAddress.Port != 80 ? $":{baseAddress.Port}" : ""}{basePath}")
-});
 
 // Configurar el elemento base
 builder.Services.AddScoped(provider =>

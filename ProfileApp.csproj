@@ -8,8 +8,9 @@
     <PWA_ManifestPath>manifest.json</PWA_ManifestPath>
     
     <!-- Configuración para GitHub Pages -->
-    <StaticWebAssetBasePath>ProfileApp</StaticWebAssetBasePath>
-    <BaseHref>/ProfileApp/</BaseHref>
+    <StaticWebAssetBasePath>/</StaticWebAssetBasePath>
+    <BaseHref>/funciona/</BaseHref>
+    <GitHubPagesRoot>funciona</GitHubPagesRoot>
     
     <!-- Optimizaciones de publicación -->
     <PublishTrimmed>true</PublishTrimmed>
@@ -19,6 +20,7 @@
     <BlazorWebAssemblyLoadAllGlobalizationData>false</BlazorWebAssemblyLoadAllGlobalizationData>
     
     <!-- Configuración de publicación -->
+    <PublishDir>wwwroot</PublishDir>
     <PublishUrl>publish\</PublishUrl>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>

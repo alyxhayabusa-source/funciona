@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ main ]  # Cambia a 'master' si esa es tu rama principal
+    branches: [ main ]
   workflow_dispatch:
 
 permissions:
@@ -28,13 +28,23 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '9.0.x'
+        dotnet-version: '8.0.x'
     
-    - name: Restore dependencies
-      run: dotnet restore
+    - name: Install dependencies
+      run: |
+        dotnet restore
+        dotnet tool install -g Microsoft.Web.LibraryManager.Cli
+        dotnet tool restore
     
     - name: Publish
-      run: dotnet publish -c Release -o release --nologo
+      run: |
+        dotnet publish -c Release -o release --nologo /p:BaseHref=/funciona/
+        
+        # Crear archivo 404.html para GitHub Pages
+        cp release/wwwroot/index.html release/wwwroot/404.html
+        
+        # Crear .nojekyll para evitar el procesamiento de Jekyll
+        touch release/wwwroot/.nojekyll
     
     - name: Setup Pages
       uses: actions/configure-pages@v4
