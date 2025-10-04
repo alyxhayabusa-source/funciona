@@ -6,9 +6,10 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write  # Changed from read to write
   pages: write
   id-token: write
+  deployments: write  # Added deployment permissions
 
 concurrency:
   group: "pages"
@@ -24,6 +25,9 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}  # Explicitly use GITHUB_TOKEN
+        persist-credentials: true  # Persist credentials for subsequent steps
     
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
