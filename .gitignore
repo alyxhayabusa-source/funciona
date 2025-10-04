@@ -1,0 +1,56 @@
+# Ignorar archivos de build
+bin/
+obj/
+
+# Ignorar archivos de usuario
+*.user
+*.suo
+*.userosscache
+
+# Ignorar archivos de VS Code
+.vscode/
+
+# Ignorar archivos de Visual Studio
+.vs/
+
+# Ignorar archivos de paquetes NuGet
+.nuget/
+packages/
+
+# Ignorar archivos de publicación
+publish/
+
+# Ignorar archivos de depuración
+*.pdb
+*.exe
+*.dll
+*.xml
+*.json
+
+# Ignorar archivos de configuración local
+appsettings.Development.json
+
+# Ignorar archivos de dependencias
+node_modules/
+
+# Ignorar archivos de salida
+wwwroot/dist/
+
+# Ignorar archivos de caché
+.cache/
+
+# Ignorar archivos de JetBrains Rider
+.idea/
+
+# Ignorar archivos de cobertura
+test-results/
+coverage/
+
+# Ignorar archivos de paquetes
+*.nupkg
+
+# Ignorar archivos de configuración local
+launchSettings.json
+
+# Ignorar archivos de migración de base de datos
+Migrations/
