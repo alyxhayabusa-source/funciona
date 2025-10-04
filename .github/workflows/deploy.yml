@@ -1,15 +1,14 @@
-name: Deploy to GitHub Pages
+name: Deploy Blazor WASM to GitHub Pages
 
 on:
   push:
-    branches: [ main ]
-  workflow_dispatch:
+    branches: [main]  # Cambia si usas otra rama
+  workflow_dispatch:  # Permite ejecución manual
 
 permissions:
-  contents: write  # Changed from read to write
   pages: write
+  contents: read
   id-token: write
-  deployments: write  # Added deployment permissions
 
 concurrency:
   group: "pages"
@@ -23,41 +22,44 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}  # Explicitly use GITHUB_TOKEN
-        persist-credentials: true  # Persist credentials for subsequent steps
-    
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: '8.0.x'
-    
-    - name: Install dependencies
-      run: |
-        dotnet restore
-        dotnet tool install -g Microsoft.Web.LibraryManager.Cli
-        dotnet tool restore
-    
-    - name: Publish
-      run: |
-        dotnet publish -c Release -o release --nologo /p:BaseHref=/funciona/
-        
-        # Crear archivo 404.html para GitHub Pages
-        cp release/wwwroot/index.html release/wwwroot/404.html
-        
-        # Crear .nojekyll para evitar el procesamiento de Jekyll
-        touch release/wwwroot/.nojekyll
-    
-    - name: Setup Pages
-      uses: actions/configure-pages@v4
-      
-    - name: Upload artifact
-      uses: actions/upload-pages-artifact@v3
-      with:
-        path: release/wwwroot
-    
-    - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'  # Usa tu versión de .NET
+
+      - name: Install WASM tools
+        run: dotnet workload install wasm-tools
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Publish Blazor App
+        run: |
+          dotnet publish -c Release -o release \
+            /p:BaseHref="/funciona/" \
+            /p:StaticWebAssetBasePath="/funciona/" \
+            /p:GHPages=true
+
+      - name: Prepare for GitHub Pages
+        run: |
+          cd release/wwwroot
+          # Asegurar que el base href sea correcto
+          sed -i 's|<base href="/"|<base href="/funciona/"|g' index.html
+          # Crear 404.html para SPA routing
+          cp index.html 404.html
+          # Prevenir procesamiento de Jekyll
+          touch .nojekyll
+          # Crear CORS para evitar problemas con recursos estáticos
+          echo '/*   200' > _headers
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: release/wwwroot
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
