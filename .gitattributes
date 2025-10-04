@@ -1,0 +1,16 @@
+# Prevent Git from modifying line endings in these files to avoid Blazor integrity check issues
+*.js binary
+*.css binary
+*.html binary
+*.json binary
+*.dll binary
+*.wasm binary
+*.pdb binary
+*.blat binary
+*.dat binary
+*.dll binary
+*.pdb binary
+*.wasm binary
+*.blat binary
+*.dat binary
+*.* text=auto eol=lf
