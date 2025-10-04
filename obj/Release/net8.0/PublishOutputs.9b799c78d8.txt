@@ -1,0 +1,2 @@
+D:\Codigos de programacion\blazor\ProfileApp\bin\Release\net8.0\publish\emcc-props.json
+D:\Codigos de programacion\blazor\ProfileApp\bin\Release\net8.0\publish\web.config

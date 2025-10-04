@@ -1,0 +1,43 @@
+﻿@inherits LayoutComponentBase
+@inject NavigationManager Navigation
+
+<div class="modern-layout">
+    <!-- Navegación simplificada -->
+    <nav class="simple-navbar">
+        <div class="navbar-brand">
+            <i class="bi bi-house-fill me-2"></i>
+            <span>ProfileApp</span>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main class="main-content">
+        @Body
+    </main>
+
+    <!-- Footer moderno -->
+    <footer class="modern-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h5>ProfileApp</h5>
+                <p>Desarrollado con Blazor y mucho ❤️</p>
+            </div>
+            <div class="footer-section">
+                <h6>Enlaces</h6>
+                <div class="footer-links">
+                    <a href="#"><i class="bi bi-github"></i></a>
+                    <a href="#"><i class="bi bi-linkedin"></i></a>
+                    <a href="#"><i class="bi bi-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+@code {
+    private string GetActiveClass(string path)
+    {
+        // Aquí puedes implementar lógica para determinar la página activa
+        return "";
+    }
+}

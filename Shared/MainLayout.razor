@@ -1,0 +1,239 @@
+@inherits LayoutComponentBase
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+
+<div class="page">
+    @if (!IsHomePage())
+    {
+        <div class="back-button-container">
+            <button class="btn-back" @onclick="GoBack">
+                <i class="bi bi-arrow-left"></i> Regresar
+            </button>
+        </div>
+    }
+    <div class="main">
+        <div class="content px-4">
+            <!-- Show cards on all pages except their own -->
+            <div class="cards-section row g-4 mb-5">
+                @if (!IsCurrentPage("counter"))
+                    {
+                        <div class="col-md-6 col-lg-3">
+                            <div class="card custom-card h-100" @onclick="@(() => NavigateTo("counter"))">
+                                <div class="card-body d-flex flex-column">
+                                    <div class="card-icon">
+                                        <i class="bi bi-plus-circle-fill"></i>
+                                    </div>
+                                    <h5 class="card-title">Counter</h5>
+                                    <p class="card-text flex-grow-1">
+                                        Prueba el contador interactivo
+                                    </p>
+                                    <button class="btn btn-action">
+                                        <i class="bi bi-arrow-right me-2"></i>Explorar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                @if (!IsCurrentPage("weather"))
+                {
+                        <div class="col-md-6 col-lg-3">
+                            <div class="card custom-card h-100" @onclick="@(() => NavigateTo("weather"))">
+                                <div class="card-body d-flex flex-column">
+                                    <div class="card-icon">
+                                        <i class="bi bi-cloud-sun"></i>
+                                    </div>
+                                    <h5 class="card-title">Clima</h5>
+                                    <p class="card-text flex-grow-1">
+                                        Ver el pronóstico del tiempo actual
+                                    </p>
+                                    <button class="btn btn-action">
+                                        <i class="bi bi-arrow-right me-2"></i>Ver Clima
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <!-- Add more cards for other pages as needed -->
+                </div>
+            }
+            
+            @Body
+        </div>
+    </div>
+</div>
+
+@code {
+    private string CurrentPage => Navigation.Uri.Split('/').Last().ToLower();
+    
+    private bool IsCurrentPage(string page)
+    {
+        var current = Navigation.Uri.Split('/').Last().ToLower();
+        return current == page.ToLower();
+    }
+
+    private bool IsHomePage()
+    {
+        var current = Navigation.Uri.Split('/').Last().ToLower();
+        return string.IsNullOrEmpty(current) || current == "index" || current == "home";
+    }
+
+    private void NavigateTo(string page)
+    {
+        Navigation.NavigateTo($"/{page}");
+    }
+
+    private void GoBack()
+    {
+        Navigation.NavigateTo("/");
+    }
+}
+
+<style>
+    .back-button-container {
+        padding: 1rem 2rem;
+        background: #f8f9fa;
+        border-bottom: 1px solid #e9ecef;
+    }
+    
+    .btn-back {
+        background: none;
+        border: none;
+        color: #0d6efd;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        transition: all 0.2s ease;
+    }
+    
+    .btn-back:hover {
+        background-color: #e9ecef;
+    }
+    
+    .btn-back i {
+        font-size: 1.1rem;
+    }
+    .page {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .main {
+        flex: 1;
+        min-height: 100vh;
+        background-color: #f8f9fa;
+    }
+
+    .content {
+        padding-top: 1.5rem;
+        padding-bottom: 3rem;
+    }
+
+    /* Ensure consistent card styling */
+    .card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: none;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Counter specific styles */
+    .counter-display {
+        text-align: center;
+        padding: 2rem 0;
+        margin: 1rem 0;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .counter-number {
+        font-size: 4rem;
+        font-weight: 700;
+        color: #2c3e50;
+        transition: all 0.3s ease;
+        line-height: 1.2;
+        min-width: 120px;
+        display: inline-block;
+        text-align: center;
+        padding: 0 1rem;
+        margin: 0 auto;
+        overflow: visible;
+        white-space: nowrap;
+    }
+
+    .counter-number.positive {
+        color: #27ae60;
+    }
+
+    .counter-number.negative {
+        color: #e74c3c;
+    }
+
+    .counter-label {
+        font-size: 1rem;
+        color: #7f8c8d;
+        margin-top: 0.5rem;
+    }
+
+    .counter-controls {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin: 2rem 0;
+    }
+
+    .btn-counter {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .btn-counter i {
+        margin-right: 0.5rem;
+    }
+
+    .btn-counter.increment {
+        background-color: #2ecc71;
+        color: white;
+    }
+
+    .btn-counter.decrement {
+        background-color: #e74c3c;
+        color: white;
+    }
+
+    .btn-counter.reset {
+        background-color: #3498db;
+        color: white;
+    }
+
+    .btn-counter:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    .btn-counter:not(:disabled):hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+</style>
